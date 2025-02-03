@@ -147,7 +147,7 @@ void MyOpenGLWidget::loadModelInScene(const QString &objectType, const QString &
     // Construirea căii fișierului modelului 3D pe baza tipului obiectului
     QString modelPath = QCoreApplication::applicationDirPath() + "/../../../Models/primitives/" + objectType + ".obj";
 
-    // Verifică dacă fișierul modelului există
+    // Verific dacă fișierul modelului există
     QFile modelFile(modelPath);
     if (modelFile.exists())
     {

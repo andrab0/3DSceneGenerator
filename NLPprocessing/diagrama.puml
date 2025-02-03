@@ -1,0 +1,23 @@
+@startuml
+
+actor Utilizator as U
+
+U --> GUI : "Introduce text descriptiv"
+
+class GUI
+
+GUI --> ScriptPython : "Trimite text pentru procesare"
+GUI --> SistemFisiere : "Încarcă / Șterge modele 3D"
+
+class ScriptPython
+ScriptPython --> JSONFile : "Generează fișier JSON"
+
+class JSONFile
+JSONFile --> Redare3DQt3D : "Descrie scena 3D"
+
+class Redare3DQt3D
+Redare3DQt3D --> SistemFisiere : "Încarcă modele din fișiere"
+
+class SistemFisiere
+
+@enduml
