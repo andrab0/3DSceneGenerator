@@ -1,106 +1,124 @@
-import spacy
+from flask import Flask, request, jsonify
+import stanza
+from transformers import pipeline
+from sentence_transformers import SentenceTransformer, util
 import os
-import json
-import sys
 
-# incarcam modelul de limbaj englez cu spaCy
-nlp = spacy.load("en_core_web_sm")
+# 🔹 Inițializare server Flask
+app = Flask(__name__)
 
-# Proprietati posibile pentru obiecte
-colors = {"red", "green", "blue", "yellow", "cyan", "magenta", "white", "black", "gray", "brown"}
-textures = {"matte", "shiny", "metallic"}
-sizes = {"small", "large", "tiny", "huge"}
+# 🔹 Inițializare modele NLP
+print("🔄 [INFO] Initializing NLP models...")
 
-def check_collision(new_position, existing_objects, size):
-    """ Verifica daca noua pozitie intra in coliziune cu obiectele existente. """
-    padding = 2.0  # Spatiul suplimentar intre obiecte pentru a evita coliziuni
-    if size == "small":
-        padding = 1.0
-    elif size == "large":
-        padding = 3.0
-    elif size == "tiny":
-        padding = 0.5
-    elif size == "huge":
-        padding = 4.0
+# 1. Stanza pentru analiza sintactică
+stanza.download("en", processors="tokenize,mwt,pos,lemma,depparse", verbose=False)
+nlp = stanza.Pipeline("en", processors="tokenize,mwt,pos,lemma,depparse", verbose=False)
 
-    for obj in existing_objects:
-        pos = obj['position']
-        # Verificare simpla pe toate cele trei axe
-        if abs(new_position['x'] - pos['x']) < padding and \
-           abs(new_position['y'] - pos['y']) < padding and \
-           abs(new_position['z'] - pos['z']) < padding:
-            return True
-    return False
+# 2. Transformers pentru extragerea relațiilor
+relation_extractor = pipeline("text2text-generation", model="Babelscape/rebel-large")
 
-def process_text_to_json(text, output_dir):
-    doc = nlp(text)
+# 3. SentenceTransformer pentru compararea relațiilor spațiale
+relation_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+
+print("✅ [DONE] Models loaded. Server ready to process text.")
+
+# 🔹 Expresii de relații spațiale comune
+SPATIAL_RELATIONS = ["left of", "right of", "in front of", "behind", "above", "below"]
+
+def extract_objects_and_attributes(doc):
+    """Extrage obiectele și atributele (culoare, dimensiune) din text."""
     objects = []
-    current_object = None
-    current_attributes = {
-        'color': None,
-        'texture': None,
-        'size': None
+    object_attributes = {}
+
+    for sentence in doc.sentences:
+        # Parcurgem fiecare cuvânt din propoziție
+        for word in sentence.words:
+            if word.upos == "NOUN":  # Identifică substantive (obiecte)
+                obj_name = word.text
+                objects.append(obj_name)
+                object_attributes[obj_name] = {"color": None, "size": None}
+
+                # Căutăm adjective asociate cu substantivul curent
+                for child in sentence.words:
+                    if child.head == word.id and child.upos == "ADJ":  # Adjective dependente de substantiv
+                        if object_attributes[obj_name]["color"] is None:
+                            object_attributes[obj_name]["color"] = child.text
+                        else:
+                            object_attributes[obj_name]["size"] = child.text
+
+    return objects, object_attributes
+
+def extract_spatial_relations(text):
+    """Extrage relațiile spațiale folosind un model de deep learning."""
+    relations = []
+
+    # Folosim modelul REBEL pentru extragerea relațiilor
+    rebel_results = relation_extractor(text)
+    for result in rebel_results:
+        generated_text = result["generated_text"]
+        # Parsăm rezultatul pentru a extrage subiect, relație și obiect
+        if "|" in generated_text:
+            parts = generated_text.split("|")
+            if len(parts) == 3:
+                subject, relation, obj = parts
+                # Filtrăm doar relațiile spațiale
+                if any(spatial_rel in relation.lower() for spatial_rel in SPATIAL_RELATIONS):
+                    relations.append({
+                        "object_1": subject.strip(),
+                        "relation": relation.strip(),
+                        "object_2": obj.strip()
+                    })
+
+    return relations
+
+def resolve_spatial_relations(objects, relations):
+    """Rezolvă relațiile spațiale pentru a determina pozițiile obiectelor."""
+    resolved_relations = []
+
+    for relation in relations:
+        obj1 = relation["object_1"]
+        obj2 = relation["object_2"]
+        rel = relation["relation"]
+
+        # Verificăm dacă obiectele există în listă
+        if obj1 in objects and obj2 in objects:
+            resolved_relations.append({
+                "object_1": obj1,
+                "relation": rel,
+                "object_2": obj2
+            })
+
+    return resolved_relations
+
+@app.route("/process", methods=["POST"])
+def process_text():
+    """Endpoint pentru procesarea NLP a textului."""
+    data = request.json
+    text = data.get("text", "")
+
+    if not text:
+        return jsonify({"error": "No text provided"}), 400
+
+    # Analizăm textul folosind Stanza
+    doc = nlp(text)
+
+    # Extragem obiectele și atributele
+    objects, object_attributes = extract_objects_and_attributes(doc)
+
+    # Extragem relațiile spațiale folosind modelul REBEL
+    relations = extract_spatial_relations(text)
+
+    # Rezolvăm relațiile spațiale
+    resolved_relations = resolve_spatial_relations(objects, relations)
+
+    # Construim răspunsul JSON
+    scene_data = {
+        "objects": [{"object": obj, "attributes": object_attributes[obj]} for obj in objects],
+        "relations": resolved_relations
     }
-    position_x, position_y, position_z = 0.0, 0.0, 0.0
 
-    for token in doc:
-        token_text = token.text.lower()
+    return jsonify(scene_data)
 
-        # Identificam atributele si le asociem cu un obiect
-        if token_text in colors:
-            current_attributes['color'] = token_text
-        elif token_text in textures:
-            current_attributes['texture'] = token_text
-        elif token_text in sizes:
-            current_attributes['size'] = token_text
-        elif token.pos_ == "NOUN" and token_text not in {"texture", "color", "size"}:  # Evitam crearea de obiecte pentru termeni de atribut
-            # Cream un obiect nou cu atributele curente
-            new_position = {'x': position_x, 'y': position_y, 'z': position_z}
-
-            # Verificam coliziunile si ajustam pozitia daca e necesar
-            while check_collision(new_position, objects, current_attributes['size']):
-                new_position['x'] += 2.5  # Ajustam pozitia pe axa X sau poti adauga si pe Y, Z
-
-            current_object = {
-                'object': token_text,
-                'color': current_attributes['color'],
-                'texture': current_attributes['texture'],
-                'size': current_attributes['size'],
-                'position': new_position
-            }
-            objects.append(current_object)
-
-            # Actualizam pozitiile pentru urmatorul obiect
-            position_x = new_position['x'] + 2.5
-
-            # Resetam atributele dupa ce obiectul a fost creat
-            current_attributes = {
-                'color': None,
-                'texture': None,
-                'size': None
-            }
-
-    # Structura de date pentru scena
-    scene_data = {'objects': objects}
-
-    # Cream directorul de output daca nu exista
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    # Salvam fisierul JSON
-    output_file = os.path.join(output_dir, 'scene.json')
-    with open(output_file, 'w') as f:
-        json.dump(scene_data, f, indent=4)
-
-    return output_file
-
-if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print('Usage: python processInput.py <text>')
-        sys.exit()
-
-    text = sys.argv[1]
-
-    output_dir = 'temp'
-    json_file = process_text_to_json(text, output_dir)
-    print(f'Output file: {json_file}')
+if __name__ == "__main__":
+    # Pornim serverul Flask
+    app.run(host="0.0.0.0", port=5000, debug=False)
