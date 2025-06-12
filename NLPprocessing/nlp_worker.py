@@ -9,7 +9,7 @@ print("✅ [DONE] Model loaded.")
 
 @app.route("/process_nlp", methods=["POST"])
 def process_nlp():
-    """Procesează textul și returnează structura linguistică detaliată."""
+    """Proceseaza textul si returneaza structura linguistica detaliata."""
     data = request.json
     text = data.get("text", "")
 

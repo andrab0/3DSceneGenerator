@@ -12,7 +12,7 @@ except ImportError:
     EXR_SUPPORT = False
 
 # Folder to scan
-INPUT_DIR = "../../Models/Textures"  # schimbă dacă e altă cale
+INPUT_DIR = "../../Models/Textures"  # schimba daca e alta cale
 
 # Formate acceptate ca input
 EXTENSIONS = [".jpg", ".jpeg", ".exr"]

@@ -16,13 +16,13 @@ QString findExistingTextureFile(const QString &basePath)
         if (QFileInfo::exists(candidate))
             return candidate;
     }
-    return QString(); // nimic găsit
+    return QString(); // nimic gasit
 }
 
 PBRMaterial::PBRMaterial(Qt3DCore::QNode *parent, const QString &baseName, const QColor &albedoColor)
     : Qt3DRender::QMaterial(parent)
 {
-    qDebug() << "🔧 Creating FIXED PBR Material for:" << baseName << "albedo:" << albedoColor.name();
+    qDebug() << "Creating FIXED PBR Material for:" << baseName << "albedo:" << albedoColor.name();
 
     auto *effect = new Qt3DRender::QEffect(this);
     auto *technique = new Qt3DRender::QTechnique(effect);
@@ -35,7 +35,7 @@ PBRMaterial::PBRMaterial(Qt3DCore::QNode *parent, const QString &baseName, const
     auto *shader = new Qt3DRender::QShaderProgram(renderPass);
     QString shaderBase = QCoreApplication::applicationDirPath() + "/../../../";
 
-    qDebug() << "🔧 Loading shaders from:" << shaderBase;
+    qDebug() << "Loading shaders from:" << shaderBase;
     shader->setVertexShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(shaderBase + "pbr.vert")));
     shader->setFragmentShaderCode(Qt3DRender::QShaderProgram::loadSource(QUrl::fromLocalFile(shaderBase + "pbr.frag")));
 
@@ -53,7 +53,7 @@ PBRMaterial::PBRMaterial(Qt3DCore::QNode *parent, const QString &baseName, const
     addParameter(new Qt3DRender::QParameter(QStringLiteral("lightIntensity"), 100.0f));
     addParameter(new Qt3DRender::QParameter(QStringLiteral("camPos"), QVector3D(0.0f, 15.0f, 30.0f)));
 
-    qDebug() << "✅ FIXED PBR Material created successfully";
+    qDebug() << "FIXED PBR Material created successfully";
 }
 
 PBRMaterial::~PBRMaterial() = default;
@@ -78,23 +78,23 @@ void PBRMaterial::setupTextures(const QString &baseName, const QColor &albedoCol
         SimpleTexture2D *texture = nullptr;
 
         if (QFileInfo::exists(full)) {
-            qDebug() << "✅ Loading real texture:" << full;
+            qDebug() << "Loading real texture:" << full;
             texture = loadOrPlaceholder(full, tex.uniform, albedoColor);
             loaded++;
         } else {
-            qDebug() << "📋 Creating default texture for:" << tex.uniform;
+            qDebug() << "Creating default texture for:" << tex.uniform;
             texture = createDefaultTexture(tex.uniform, albedoColor);
         }
 
         if (texture) {
             addParameter(new Qt3DRender::QParameter(tex.uniform, texture));
-            qDebug() << "✅ Added texture parameter:" << tex.uniform;
+            qDebug() << "Added texture parameter:" << tex.uniform;
         } else {
-            qDebug() << "❌ Failed to create texture for:" << tex.uniform;
+            qDebug() << "Failed to create texture for:" << tex.uniform;
         }
     }
 
-    qDebug() << "🎨 Loaded" << loaded << "real textures for" << baseName;
+    qDebug() << "Loaded" << loaded << "real textures for" << baseName;
 
     // Always add albedo color as fallback
     addParameter(new Qt3DRender::QParameter(QStringLiteral("albedoColor"), QVector3D(
@@ -107,12 +107,12 @@ SimpleTexture2D* PBRMaterial::loadOrPlaceholder(const QString &filePath, const Q
     Qt3DRender::QTextureImage *img = new Qt3DRender::QTextureImage(tex);
 
     if (QFileInfo::exists(filePath)) {
-        qDebug() << "📂 Loading texture file:" << filePath;
+        qDebug() << "Loading texture file:" << filePath;
         img->setSource(QUrl::fromLocalFile(filePath));
         tex->addTextureImage(img);
         return tex;
     } else {
-        qDebug() << "❌ Texture file not found:" << filePath;
+        qDebug() << "Texture file not found:" << filePath;
         delete tex;
         return createDefaultTexture(uniformName, albedoColor);
     }
@@ -138,10 +138,10 @@ SimpleTexture2D* PBRMaterial::createSolidColorTexture(const QColor &color)
         Qt3DRender::QTextureImage *img = new Qt3DRender::QTextureImage(tex);
         img->setSource(QUrl::fromLocalFile(tempFile));
         tex->addTextureImage(img);
-        qDebug() << "✅ Created color texture:" << tempFile;
+        qDebug() << "Created color texture:" << tempFile;
         return tex;
     } else {
-        qDebug() << "❌ Failed to save color texture";
+        qDebug() << "Failed to save color texture";
         delete tex;
         return nullptr;
     }
@@ -157,27 +157,27 @@ SimpleTexture2D* PBRMaterial::createDefaultTexture(const QString &type, const QC
     if (type == "albedoMap") {
         // Use albedo color
         image.fill(albedoColor);
-        qDebug() << "📋 Creating albedo placeholder with color:" << albedoColor.name();
+        qDebug() << "Creating albedo placeholder with color:" << albedoColor.name();
     }
     else if (type == "normalMap") {
         // Flat normal: RGB(128, 128, 255) = normal pointing up
         image.fill(QColor(128, 128, 255, 255));
-        qDebug() << "📋 Creating normal placeholder (flat)";
+        qDebug() << "Creating normal placeholder (flat)";
     }
     else if (type == "roughnessMap") {
         // Medium roughness: RGB(128, 128, 128) = 0.5 roughness
         image.fill(QColor(128, 128, 128, 255));
-        qDebug() << "📋 Creating roughness placeholder (0.5)";
+        qDebug() << "Creating roughness placeholder (0.5)";
     }
     else if (type == "metallicMap") {
         // Non-metallic: RGB(0, 0, 0) = 0.0 metallic
         image.fill(QColor(0, 0, 0, 255));
-        qDebug() << "📋 Creating metallic placeholder (0.0)";
+        qDebug() << "Creating metallic placeholder (0.0)";
     }
     else {
         // Default: white
         image.fill(QColor(255, 255, 255, 255));
-        qDebug() << "📋 Creating default white placeholder";
+        qDebug() << "Creating default white placeholder";
     }
 
     // Save to temp directory
@@ -189,10 +189,10 @@ SimpleTexture2D* PBRMaterial::createDefaultTexture(const QString &type, const QC
         Qt3DRender::QTextureImage *img = new Qt3DRender::QTextureImage(tex);
         img->setSource(QUrl::fromLocalFile(tempFile));
     tex->addTextureImage(img);
-        qDebug() << "✅ Created default texture:" << tempFile;
+        qDebug() << "Created default texture:" << tempFile;
     return tex;
     } else {
-        qDebug() << "❌ Failed to save default texture for:" << type;
+        qDebug() << "Failed to save default texture for:" << type;
         delete tex;
         return nullptr;
     }

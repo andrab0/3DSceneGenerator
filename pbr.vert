@@ -3,7 +3,7 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec2 texCoords;
-// Tangent opțional
+// Tangent optional
 layout(location = 3) in vec3 tangent;
 
 out vec2 TexCoords;
@@ -24,7 +24,7 @@ void main()
     vec3 T = normalize(mat3(modelMatrix) * tangent);
     vec3 B = cross(N, T);
 
-    // fallback simplu dacă tangenta e nulă
+    // fallback simplu daca tangenta e nula
     if (length(T) < 0.01)
     {
         T = normalize(cross(N, vec3(0.0, 1.0, 0.0)));

@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Creare obiect MyOpenGLWidget
     viewerWidget = new MyOpenGLWidget(this);
 
-    // Înlocuiește widget-ul placeholder din layout cu viewerWidget
+    // inlocuieste widget-ul placeholder din layout cu viewerWidget
     QVBoxLayout *layoutViewer = new QVBoxLayout(ui->viewer);  // ui->viewerPlaceholder este widgetul placeholder din UI
     layoutViewer->addWidget(viewerWidget);
     viewerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -139,7 +139,7 @@ void MainWindow::on_generate_clicked()
     progressDialog->setWindowModality(Qt::ApplicationModal);
     progressDialog->setCancelButton(nullptr);
     progressDialog->setMinimumDuration(200);
-    progressDialog->setValue(50); // Setează un progres intermediar
+    progressDialog->setValue(50); // Seteaza un progres intermediar
 
     ScriptRunner *scriptRunner = new ScriptRunner(scriptPath, inputText, this);
     connect(scriptRunner, &ScriptRunner::scriptFinished, this, &MainWindow::on_scriptFinished);
@@ -150,7 +150,7 @@ void MainWindow::on_generate_clicked()
 
 // void MainWindow::on_scriptFinished(const QString &outputFile, bool success)
 // {
-//     progressDialog->setValue(100);  // Marchează finalizarea procesului
+//     progressDialog->setValue(100);  // Marcheaza finalizarea procesului
 //     progressDialog->hide();
 //     delete progressDialog;
 
@@ -161,7 +161,7 @@ void MainWindow::on_generate_clicked()
 //     }
 
 //     QString fixedOutputFile = QCoreApplication::applicationDirPath() + "/../../../temp/scene_output.json";
-//     fixedOutputFile = fixedOutputFile.replace("\\", "/"); // Normalizează calea
+//     fixedOutputFile = fixedOutputFile.replace("\\", "/"); // Normalizeaza calea
 
 //     qDebug() << "Script finished, JSON file path:" << fixedOutputFile;
 
@@ -198,7 +198,7 @@ void MainWindow::on_scriptFinished(const QString &outputFile, bool success)
         return;
     }
 
-    // Citește și păstrează JSON-ul pentru salvare ulterioară
+    // Citeste si pastreaza JSON-ul pentru salvare ulterioara
     if (jsonFile.open(QIODevice::ReadOnly))
     {
         currentSceneJson = jsonFile.readAll();
@@ -220,7 +220,7 @@ void MainWindow::on_save_clicked()
         return;
     }
 
-    // Deschide dialog pentru salvarea fișierului
+    // Deschide dialog pentru salvarea fisierului
     QString fileName = QFileDialog::getSaveFileName(
         this,
         tr("Save Scene"),
@@ -233,7 +233,7 @@ void MainWindow::on_save_clicked()
         return; // Utilizatorul a anulat
     }
 
-    // Parsează JSON-ul existent
+    // Parseaza JSON-ul existent
     QJsonParseError parseError;
     QJsonDocument doc = QJsonDocument::fromJson(currentSceneJson.toUtf8(), &parseError);
 
@@ -245,18 +245,18 @@ void MainWindow::on_save_clicked()
 
     QJsonObject sceneObject = doc.object();
 
-    // Adaugă textul din input box
+    // Adauga textul din input box
     QString inputText = ui->inputText->toPlainText();
     sceneObject["user_input"] = inputText;
 
-    // Adaugă metadate pentru salvare
+    // Adauga metadate pentru salvare
     sceneObject["saved_timestamp"] = QDateTime::currentDateTime().toString(Qt::ISODate);
-    sceneObject["app_version"] = "1.0"; // sau versiunea aplicației tale
+    sceneObject["app_version"] = "1.0"; // sau versiunea aplicatiei tale
 
-    // Creează noul document JSON
+    // Creeaza noul document JSON
     QJsonDocument saveDoc(sceneObject);
 
-    // Salvează fișierul
+    // Salveaza fisierul
     QFile saveFile(fileName);
     if (!saveFile.open(QIODevice::WriteOnly))
     {
@@ -284,7 +284,7 @@ void MainWindow::on_clear_clicked()
 
 void MainWindow::on_load_clicked()
 {
-    // Deschide dialog pentru încărcarea fișierului
+    // Deschide dialog pentru incarcarea fisierului
     QString fileName = QFileDialog::getOpenFileName(
         this,
         tr("Load Scene"),
@@ -297,7 +297,7 @@ void MainWindow::on_load_clicked()
         return; // Utilizatorul a anulat
     }
 
-    // Citește fișierul
+    // Citeste fisierul
     QFile loadFile(fileName);
     if (!loadFile.open(QIODevice::ReadOnly))
     {
@@ -308,7 +308,7 @@ void MainWindow::on_load_clicked()
     QByteArray jsonData = loadFile.readAll();
     loadFile.close();
 
-    // Parsează JSON-ul
+    // Parseaza JSON-ul
     QJsonParseError parseError;
     QJsonDocument doc = QJsonDocument::fromJson(jsonData, &parseError);
 
@@ -320,14 +320,14 @@ void MainWindow::on_load_clicked()
 
     QJsonObject sceneObject = doc.object();
 
-    // Verifică dacă este un fișier de scenă valid
+    // Verifica daca este un fisier de scena valid
     if (!sceneObject.contains("objects") && !sceneObject.contains("scene"))
     {
         QMessageBox::warning(this, "Error", "The selected file does not appear to be a valid scene file.");
         return;
     }
 
-    // Extrage și setează textul de input dacă există
+    // Extrage si seteaza textul de input daca exista
     if (sceneObject.contains("user_input"))
     {
         QString userInput = sceneObject["user_input"].toString();
@@ -335,22 +335,22 @@ void MainWindow::on_load_clicked()
     }
     else
     {
-        // Dacă nu există user_input, golește text box-ul
+        // Daca nu exista user_input, goleste text box-ul
         ui->inputText->clear();
         QMessageBox::information(this, "Info", "Scene loaded successfully, but no input text was found in the file.");
     }
 
-    // Creează un fișier temporar pentru încărcarea scenei
+    // Creeaza un fisier temporar pentru incarcarea scenei
     QString tempSceneFile = QCoreApplication::applicationDirPath() + "/../../../temp/loaded_scene.json";
 
-    // Creează directorul temp dacă nu există
+    // Creeaza directorul temp daca nu exista
     QDir tempDir = QFileInfo(tempSceneFile).absoluteDir();
     if (!tempDir.exists())
     {
         tempDir.mkpath(".");
     }
 
-    // Salvează JSON-ul pentru încărcare (fără user_input pentru renderer)
+    // Salveaza JSON-ul pentru incarcare (fara user_input pentru renderer)
     QJsonObject renderObject = sceneObject;
     renderObject.remove("user_input");
     renderObject.remove("saved_timestamp");
@@ -367,10 +367,10 @@ void MainWindow::on_load_clicked()
     tempFile.write(renderDoc.toJson());
     tempFile.close();
 
-    // Păstrează JSON-ul curent pentru salvări ulterioare
+    // Pastreaza JSON-ul curent pentru salvari ulterioare
     currentSceneJson = renderDoc.toJson();
 
-    // Încarcă scena în renderer
+    // incarca scena in renderer
     sceneWidget->loadScene(tempSceneFile);
 
     QMessageBox::information(this, "Success", "Scene loaded successfully!");
@@ -408,7 +408,7 @@ void MainWindow::on_deleteModel_clicked()
     QFileInfo fileInfo(filePath);
     if (fileInfo.exists())
     {
-        // Confirmare pentru ștergerea fișierului
+        // Confirmare pentru stergerea fisierului
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Delete resource", "Are you sure you want to delete this resource?",
                                       QMessageBox::Yes|QMessageBox::No);
@@ -419,7 +419,7 @@ void MainWindow::on_deleteModel_clicked()
                 if (QFile::remove(filePath)) {
                     QMessageBox::information(this, "Success", "File deleted successfully.");
 
-                    // Dacă fișierul șters este cel încărcat în scenă, șterge modelul din scenă
+                    // Daca fisierul sters este cel incarcat in scena, sterge modelul din scena
                     viewerWidget->clearScene();
                 } else {
                     qDebug() << "Couldn't detele this file.";
@@ -434,7 +434,7 @@ void MainWindow::on_deleteModel_clicked()
                 {
                     QMessageBox::information(this, "Success", "Directory deleted successfully.");
 
-                    // Dacă fișierul șters este cel încărcat în scenă, șterge modelul din scenă
+                    // Daca fisierul sters este cel incarcat in scena, sterge modelul din scena
                     viewerWidget->clearScene();
                 }
                 else
@@ -449,7 +449,7 @@ void MainWindow::on_deleteModel_clicked()
 
 void MainWindow::on_importModel_clicked()
 {
-    // Întreabă utilizatorul ce tip de import dorește
+    // intreaba utilizatorul ce tip de import doreste
     QMessageBox::StandardButton choice = QMessageBox::question(
         this, tr("Import Type"),
         tr("What would you like to import?\n\nYes = Individual Files\nNo = Directory (with all contents)"),
@@ -461,7 +461,7 @@ void MainWindow::on_importModel_clicked()
     }
 
     if (choice == QMessageBox::Yes) {
-        // Import fișiere individuale
+        // Import fisiere individuale
         QStringList selectedFiles = QFileDialog::getOpenFileNames(
             this,
             tr("Select 3D Model Files"),
@@ -487,7 +487,7 @@ void MainWindow::on_importModel_clicked()
     }
 }
 
-// Funcție pentru importul de fișiere
+// Functie pentru importul de fisiere
 void MainWindow::importFiles(const QStringList &filePaths)
 {
     QString primitivesDirPath = QCoreApplication::applicationDirPath() + "/../../../Models/primitives/";
@@ -548,7 +548,7 @@ void MainWindow::importFiles(const QStringList &filePaths)
         }
     }
 
-    // Afișează rezultatul
+    // Afiseaza rezultatul
     if (successCount == totalCount) {
         QMessageBox::information(this, tr("Success"),
             tr("Successfully imported %1 file(s) to primitives.").arg(successCount));
@@ -561,7 +561,7 @@ void MainWindow::importFiles(const QStringList &filePaths)
     }
 }
 
-// Funcție pentru importul de directoare
+// Functie pentru importul de directoare
 void MainWindow::importDirectory(const QString &dirPath)
 {
     QString primitivesDirPath = QCoreApplication::applicationDirPath() + "/../../../Models/primitives/";
@@ -571,7 +571,7 @@ void MainWindow::importDirectory(const QString &dirPath)
         primitivesDir.mkpath(".");
     }
 
-    // Colectează toate fișierele de model din director și subdirectoare
+    // Colecteaza toate fisierele de model din director si subdirectoare
     QStringList modelFiles = collectModelFiles(dirPath);
 
     if (modelFiles.isEmpty()) {
@@ -587,7 +587,7 @@ void MainWindow::importDirectory(const QString &dirPath)
         QFileInfo fileInfo(filePath);
         QString destinationPath = primitivesDirPath + fileInfo.fileName();
 
-        // Pentru import masiv, renumerotează automat fișierele duplicate
+        // Pentru import masiv, renumeroteaza automat fisierele duplicate
         if (QFile::exists(destinationPath)) {
             QString baseName = fileInfo.completeBaseName();
             QString extension = fileInfo.suffix();
@@ -607,7 +607,7 @@ void MainWindow::importDirectory(const QString &dirPath)
         }
     }
 
-    // Afișează rezultatul
+    // Afiseaza rezultatul
     QString message = tr("Successfully imported %1 of %2 model files from directory to primitives.")
         .arg(successCount).arg(modelFiles.size());
 
@@ -619,7 +619,7 @@ void MainWindow::importDirectory(const QString &dirPath)
     }
 }
 
-// Funcție helper pentru colectarea fișierelor de model recursiv
+// Functie helper pentru colectarea fisierelor de model recursiv
 QStringList MainWindow::collectModelFiles(const QString &dirPath)
 {
     QStringList modelFiles;
@@ -685,9 +685,9 @@ void ScriptRunner::run()
 
 void MainWindow::setupSettingsTab()
 {
-    // Adaugă limbile în combo box
+    // Adauga limbile in combo box
     ui->lLanguageComboBox->addItem("English", "en");
-    ui->lLanguageComboBox->addItem("Română", "ro");
+    ui->lLanguageComboBox->addItem("Romana", "ro");
     ui->lLanguageComboBox->addItem("Français", "fr");
     ui->lLanguageComboBox->addItem("Español", "es");
     ui->lLanguageComboBox->addItem("Deutsch", "de");
@@ -697,17 +697,17 @@ void MainWindow::setupSettingsTab()
     ui->lLanguageComboBox->addItem("日本語", "ja");
     ui->lLanguageComboBox->addItem("한국어", "ko");
 
-    // Conectează signal-ul
+    // Conecteaza signal-ul
     connect(ui->lLanguageComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &MainWindow::onLanguageChanged);
 }
 
 void MainWindow::loadSettings()
 {
-    // Încarcă limba salvată sau folosește default-ul
+    // incarca limba salvata sau foloseste default-ul
     currentLanguageCode = appSettings->value("language", "en").toString();
 
-    // Setează combo box-ul la limba corectă
+    // Seteaza combo box-ul la limba corecta
     for (int i = 0; i < ui->lLanguageComboBox->count(); ++i) {
         if (ui->lLanguageComboBox->itemData(i).toString() == currentLanguageCode) {
             ui->lLanguageComboBox->setCurrentIndex(i);
@@ -736,7 +736,7 @@ void MainWindow::onLanguageChanged(int index)
         QString languageName = ui->lLanguageComboBox->itemText(index);
         qDebug() << "Language changed to:" << languageName << "(" << currentLanguageCode << ")";
 
-        // Opțional: mesaj de confirmare
+        // Optional: mesaj de confirmare
         QMessageBox::information(this, "Language Changed",
             QString("Language set to: %1").arg(languageName));
     }

@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent)
     // Creare obiect MyOpenGLWidget
     viewerWidget = new MyOpenGLWidget(this);
 
-    // Înlocuiește widget-ul placeholder din layout cu viewerWidget
+    // inlocuieste widget-ul placeholder din layout cu viewerWidget
     QVBoxLayout *layoutViewer = new QVBoxLayout(ui->viewer);  // ui->viewerPlaceholder este widgetul placeholder din UI
     layoutViewer->addWidget(viewerWidget);
     viewerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -131,7 +131,7 @@ void MainWindow::on_generate_clicked()
     progressDialog->setWindowModality(Qt::ApplicationModal);
     progressDialog->setCancelButton(nullptr);
     progressDialog->setMinimumDuration(200);
-    progressDialog->setValue(50); // Setează un progres intermediar
+    progressDialog->setValue(50); // Seteaza un progres intermediar
 
     ScriptRunner *scriptRunner = new ScriptRunner(scriptPath, inputText, this);
     connect(scriptRunner, &ScriptRunner::scriptFinished, this, &MainWindow::on_scriptFinished);
@@ -142,7 +142,7 @@ void MainWindow::on_generate_clicked()
 
 void MainWindow::on_scriptFinished(const QString &outputFile, bool success)
 {
-    progressDialog->setValue(100);  // Marchează finalizarea procesului
+    progressDialog->setValue(100);  // Marcheaza finalizarea procesului
     progressDialog->hide();
     delete progressDialog;
 
@@ -153,7 +153,7 @@ void MainWindow::on_scriptFinished(const QString &outputFile, bool success)
     }
 
     QString fixedOutputFile = outputFile;
-    fixedOutputFile = fixedOutputFile.replace("\\", "/"); // Normalizează calea
+    fixedOutputFile = fixedOutputFile.replace("\\", "/"); // Normalizeaza calea
 
     qDebug() << "Script finished, JSON file path:" << fixedOutputFile;
 
@@ -218,7 +218,7 @@ void MainWindow::on_deleteModel_clicked()
     QFileInfo fileInfo(filePath);
     if (fileInfo.exists())
     {
-        // Confirmare pentru ștergerea fișierului
+        // Confirmare pentru stergerea fisierului
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Delete resource", "Are you sure you want to delete this resource?",
                                       QMessageBox::Yes|QMessageBox::No);
@@ -229,7 +229,7 @@ void MainWindow::on_deleteModel_clicked()
                 if (QFile::remove(filePath)) {
                     QMessageBox::information(this, "Success", "File deleted successfully.");
 
-                    // Dacă fișierul șters este cel încărcat în scenă, șterge modelul din scenă
+                    // Daca fisierul sters este cel incarcat in scena, sterge modelul din scena
                     viewerWidget->clearScene();
                 } else {
                     qDebug() << "Couldn't detele this file.";
@@ -244,7 +244,7 @@ void MainWindow::on_deleteModel_clicked()
                 {
                     QMessageBox::information(this, "Success", "Directory deleted successfully.");
 
-                    // Dacă fișierul șters este cel încărcat în scenă, șterge modelul din scenă
+                    // Daca fisierul sters este cel incarcat in scena, sterge modelul din scena
                     viewerWidget->clearScene();
                 }
                 else
@@ -259,13 +259,13 @@ void MainWindow::on_deleteModel_clicked()
 
 void MainWindow::on_importModel_clicked()
 {
-    // Deschide fereastra de dialog pentru selectarea unui fișier sau folder
+    // Deschide fereastra de dialog pentru selectarea unui fisier sau folder
     QString selectedPath = QFileDialog::getExistingDirectory(this, tr("Select a file or a directory for import"),
                                                              QDir::homePath(),
                                                              QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
     if (selectedPath.isEmpty()) {
-        // Dacă utilizatorul nu a selectat nimic, ieși din metodă
+        // Daca utilizatorul nu a selectat nimic, iesi din metoda
         return;
     }
 
@@ -274,13 +274,13 @@ void MainWindow::on_importModel_clicked()
 
     QDir importDir(importDirPath);
     if (!importDir.exists()) {
-        // Crează directorul "imports" dacă nu există deja
+        // Creaza directorul "imports" daca nu exista deja
         importDir.mkpath(".");
     }
 
     QFileInfo selectedInfo(selectedPath);
     if (selectedInfo.isDir()) {
-        // Dacă utilizatorul a selectat un folder, copiază tot folderul și conținutul acestuia
+        // Daca utilizatorul a selectat un folder, copiaza tot folderul si continutul acestuia
         QString destinationPath = importDirPath + selectedInfo.fileName();
         if (QDir(destinationPath).exists()) {
             QMessageBox::critical(this, tr("Error"), tr("There already is a resource with the same name in imports."));
@@ -292,7 +292,7 @@ void MainWindow::on_importModel_clicked()
             QMessageBox::information(this, tr("Success"), tr("Resource imported successfuly."));
         }
     } else if (selectedInfo.isFile()) {
-        // Dacă utilizatorul a selectat un fișier, copiază fișierul în directorul "imports"
+        // Daca utilizatorul a selectat un fisier, copiaza fisierul in directorul "imports"
         QString destinationFilePath = importDirPath + selectedInfo.fileName();
         if (QFile::exists(destinationFilePath)) {
             QMessageBox::critical(this, tr("Error"), tr("There already is a resource with the same name in imports."));
@@ -306,7 +306,7 @@ void MainWindow::on_importModel_clicked()
     }
 }
 
-// Funcție auxiliară pentru copierea recursivă a unui director
+// Functie auxiliara pentru copierea recursiva a unui director
 bool MainWindow::copyDirectoryRecursively(const QString &sourceDirPath, const QString &destDirPath)
 {
     QDir sourceDir(sourceDirPath);

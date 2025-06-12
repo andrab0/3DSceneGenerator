@@ -1,0 +1,44 @@
+{
+    "objects": [
+        {
+            "id": "book_1",
+            "object": "book",
+            "attributes": {
+                "color": "rosie",
+                "size": null,
+                "animations": null
+            }
+        },
+        {
+            "id": "lamp_1",
+            "object": "lamp",
+            "attributes": {
+                "color": "albastre",
+                "size": null,
+                "animations": null
+            }
+        },
+        {
+            "id": "desk_1",
+            "object": "desk",
+            "attributes": {
+                "color": "lemnos",
+                "size": null,
+                "animations": null
+            }
+        }
+    ],
+    "relations": [
+        {
+            "object_1": "book_1",
+            "relation": "left_of",
+            "object_2": "lamp_1"
+        },
+        {
+            "object_1": "lamp_1",
+            "relation": "on",
+            "object_2": "desk_1"
+        }
+    ],
+    "animation_couples": []
+}

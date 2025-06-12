@@ -7,16 +7,16 @@ U --> GUI : "Introduce text descriptiv"
 class GUI
 
 GUI --> ScriptPython : "Trimite text pentru procesare"
-GUI --> SistemFisiere : "Încarcă / Șterge modele 3D"
+GUI --> SistemFisiere : "incarca / sterge modele 3D"
 
 class ScriptPython
-ScriptPython --> JSONFile : "Generează fișier JSON"
+ScriptPython --> JSONFile : "Genereaza fisier JSON"
 
 class JSONFile
 JSONFile --> Redare3DQt3D : "Descrie scena 3D"
 
 class Redare3DQt3D
-Redare3DQt3D --> SistemFisiere : "Încarcă modele din fișiere"
+Redare3DQt3D --> SistemFisiere : "incarca modele din fisiere"
 
 class SistemFisiere
 

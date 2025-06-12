@@ -5,7 +5,7 @@ app = Flask(__name__)
 NLP_SERVER_URL = "http://localhost:5001/process_nlp"
 
 def extract_objects_and_relations(text):
-    """Extrage obiecte și relații folosind datele NLP de la worker."""
+    """Extrage obiecte si relatii folosind datele NLP de la worker."""
     response = requests.post(NLP_SERVER_URL, json={"text": text})
     if response.status_code != 200:
         return {"error": "NLP processing failed"}
@@ -19,7 +19,7 @@ def extract_objects_and_relations(text):
         words = sentence["words"]
         print(f"\n📌 Processing sentence: {sentence['text']}")
 
-        # Pas 1: Detectăm relațiile multi-cuvânt
+        # Pas 1: Detectam relatiile multi-cuvant
         multiword_relations = []
         for i in range(len(words) - 2):
             if (words[i]["upos"] == "ADP" and
@@ -33,7 +33,7 @@ def extract_objects_and_relations(text):
                 multiword_relations.append(relation)
                 print(f"🔍 Detected multi-word relation: {relation['phrase']}")
 
-        # Pas 2: Identificăm cuvintele dependente
+        # Pas 2: Identificam cuvintele dependente
         excluded_nouns = set()
         for rel in multiword_relations:
             for i in range(rel["start"], rel["end"] + 1):
@@ -61,7 +61,7 @@ def extract_objects_and_relations(text):
                             object_attributes[head_word["text"]]["color"].append(word["text"])
                         print(f"📥 Added attribute '{word['text']}' to {head_word['text']}")
 
-        # Pas 5: Procesăm relațiile
+        # Pas 5: Procesam relatiile
         for rel in multiword_relations:
             middle_word = words[rel["start"] + 1]
             head_word = words[middle_word["head"] - 1] if middle_word["head"] > 0 else None
@@ -76,7 +76,7 @@ def extract_objects_and_relations(text):
                 })
                 print(f"✅ Detected relation: {head_word['text']} -- {rel['phrase']} -- {target_word['text']}")
 
-    # Curățare atribute finale
+    # Curatare atribute finale
     for obj in object_attributes:
         object_attributes[obj]["color"] = " ".join(object_attributes[obj]["color"]) or None
         object_attributes[obj]["size"] = " ".join(object_attributes[obj]["size"]) or None

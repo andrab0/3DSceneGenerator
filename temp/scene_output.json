@@ -61,8 +61,8 @@
             }
         },
         {
-            "id": "sphere_1",
-            "object": "sphere",
+            "id": "golden_sphere_1",
+            "object": "golden sphere",
             "attributes": {
                 "color": "golden",
                 "size": null,
@@ -72,8 +72,8 @@
             }
         },
         {
-            "id": "cube_1",
-            "object": "cube",
+            "id": "silver_cube_1",
+            "object": "silver cube",
             "attributes": {
                 "color": "silver",
                 "size": null,
@@ -112,8 +112,8 @@
             }
         },
         {
-            "id": "sphere_2",
-            "object": "sphere",
+            "id": "yellow_sphere_1",
+            "object": "yellow sphere",
             "attributes": {
                 "color": "yellow",
                 "size": null,
@@ -167,7 +167,8 @@
                 "color": "blue",
                 "size": "large",
                 "animations": [
-                    "orbit"
+                    "orbit",
+                    "float"
                 ]
             }
         },
@@ -217,13 +218,13 @@
         },
         {
             "object_1": "chinese_armchair_1",
-            "relation": "right_of",
-            "object_2": "painted_wooden_table_1"
-        },
-        {
-            "object_1": "chinese_armchair_1",
             "relation": "next_to",
             "object_2": "wooden_stool_1"
+        },
+        {
+            "object_1": "wooden_stool_1",
+            "relation": "right_of",
+            "object_2": "painted_wooden_table_1"
         },
         {
             "object_1": "GothicBed_1",
@@ -231,19 +232,19 @@
             "object_2": "painted_wooden_table_1"
         },
         {
-            "object_1": "sphere_1",
+            "object_1": "golden_sphere_1",
             "relation": "above",
             "object_2": "GothicBed_1"
         },
         {
-            "object_1": "cube_1",
+            "object_1": "silver_cube_1",
             "relation": "above",
             "object_2": "GothicBed_1"
         },
         {
             "object_1": "vintage_cabinet_1",
             "relation": "near",
-            "object_2": "coffee_table_round1_1"
+            "object_2": "entrance"
         },
         {
             "object_1": "coffee_table_round1_1",
@@ -256,7 +257,7 @@
             "object_2": "coffee_table_round1_1"
         },
         {
-            "object_1": "sphere_2",
+            "object_1": "yellow_sphere_1",
             "relation": "on",
             "object_2": "coffee_table_round1_1"
         },
@@ -278,7 +279,7 @@
         {
             "object_1": "stone_fire_pit_1",
             "relation": "between",
-            "object_2": "painted_wooden_table_1"
+            "object_2": "furniture"
         },
         {
             "object_1": "folding_wooden_stool_1",
@@ -288,16 +289,16 @@
     ],
     "animation_couples": [
         {
-            "primary_object": "sphere_1",
+            "primary_object": "golden_sphere_1",
             "primary_animation": "orbital",
-            "reference_object": "cube_1",
-            "description": "golden sphere rotating around a floating silver cube"
+            "reference_object": "silver_cube_1",
+            "description": "golden sphere rotating around silver cube"
         },
         {
             "primary_object": "WoodenTable4_1",
             "primary_animation": "orbital",
             "reference_object": "painted_wooden_cabinet1_1",
-            "description": "large blue WoodenTable4 orbiting around a small rotating painted_wooden_cabinet1"
+            "description": "WoodenTable4 orbiting around painted_wooden_cabinet1"
         }
     ]
 }

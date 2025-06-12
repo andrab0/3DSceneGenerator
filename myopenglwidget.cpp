@@ -45,7 +45,7 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     layout->addWidget(container);
     setLayout(layout);
 
-    // Configurare cameră
+    // Configurare camera
     Qt3DRender::QCamera *camera = view->camera();
     camera->lens()->setPerspectiveProjection(45.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
     camera->setPosition(QVector3D(0, 110, 20));
@@ -58,13 +58,13 @@ MyOpenGLWidget::MyOpenGLWidget(QWidget *parent)
     camController->setLookSpeed(180.0f);
     camController->setCamera(camera);
 
-    // Crearea podelei îmbunătățite
+    // Crearea podelei imbunatatite
     setupFloor();
 
     // Configurare iluminare
     setupLighting();
 
-    // Configurare timere pentru animații și fizică
+    // Configurare timere pentru animatii si fizica
     m_animationTimer = new QTimer(this);
     connect(m_animationTimer, &QTimer::timeout, this, &MyOpenGLWidget::updateAnimations);
     m_animationTimer->start(16); // ~60 FPS
@@ -106,7 +106,7 @@ void MyOpenGLWidget::setupFloor()
     // Transform pentru podea
     Qt3DCore::QTransform *floorTransform = new Qt3DCore::QTransform();
     floorTransform->setTranslation(QVector3D(0, m_floorLevel, 0));
-    floorTransform->setRotationX(0); // Rotește pentru a fi orizontală
+    floorTransform->setRotationX(0); // Roteste pentru a fi orizontala
 
     floorEntity->addComponent(floorMesh);
     floorEntity->addComponent(floorMaterial);
@@ -115,18 +115,18 @@ void MyOpenGLWidget::setupFloor()
 
 void MyOpenGLWidget::setupLighting()
 {
-    // Lumina principală
+    // Lumina principala
     Qt3DCore::QEntity *lightEntity = new Qt3DCore::QEntity(rootEntity);
     Qt3DRender::QPointLight *pointLight = new Qt3DRender::QPointLight();
     pointLight->setColor(Qt::white);
-    pointLight->setIntensity(1.5f);
+    pointLight->setIntensity(0.8f);
     lightEntity->addComponent(pointLight);
 
     Qt3DCore::QTransform *lightTransform = new Qt3DCore::QTransform();
     lightTransform->setTranslation(QVector3D(0, 20, 15));
     lightEntity->addComponent(lightTransform);
 
-    // Iluminare ambientală
+    // Iluminare ambientala
     Qt3DCore::QEntity *ambientEntity = new Qt3DCore::QEntity(rootEntity);
     Qt3DRender::QPointLight *ambientLight = new Qt3DRender::QPointLight();
     ambientLight->setColor(QColor(180, 180, 180));
@@ -141,7 +141,7 @@ void MyOpenGLWidget::setupLighting()
 void MyOpenGLWidget::clearScene()
 {
     if (rootEntity) {
-        // Șterge obiectele din scene
+        // sterge obiectele din scene
         for (auto it = m_sceneObjects.begin(); it != m_sceneObjects.end(); ++it) {
             if (it.value().entity) {
                 delete it.value().entity;
@@ -175,7 +175,6 @@ void MyOpenGLWidget::loadModel(const QString &filePath)
     transform->setTranslation(QVector3D(0, 0, 0));
     modelEntity->addComponent(transform);
 
-    // ADAUGĂ: Trackează obiectul în sistemul de scene objects
     SceneObject sceneObj;
     sceneObj.id = "preview_model"; // ID fix pentru modelul de preview
     sceneObj.type = QFileInfo(filePath).baseName();
@@ -228,7 +227,7 @@ QJsonObject MyOpenGLWidget::parseSceneFile(const QString &filePath)
 
 bool MyOpenGLWidget::validateJsonStructure(const QJsonObject &jsonObject)
 {
-    // Verifică structura obligatorie
+    // Verifica structura obligatorie
     if (!jsonObject.contains("objects") || !jsonObject["objects"].isArray()) {
         qDebug() << "Missing or invalid 'objects' array";
         return false;
@@ -281,16 +280,16 @@ void MyOpenGLWidget::loadScene(const QString &filePath)
         objectColors[objectType] = color;
     }
 
-    // Generare poziții
+    // Generare pozitii
     QMap<QString, QVector3D> objectPositions = generateObjectPositions(objectsArray, relationsArray);
 
     // Rezolvare coliziuni
     resolveCollisions(objectPositions);
 
-    // Spawn obiecte în scenă
+    // Spawn obiecte in scena
     spawnObjectsInScene(objectPositions, objectColors, objectsArray);
 
-    // Configurare animații
+    // Configurare animatii
     setupAnimations(objectsArray, animationCouplesArray);
 }
 
@@ -300,7 +299,7 @@ QMap<QString, QVector3D> MyOpenGLWidget::generateObjectPositions(const QJsonArra
     float initialX = -5.0f;
     float initialZ = -5.0f;
 
-    // Poziționare inițială
+    // Pozitionare initiala
     for (const QJsonValue &value : objects) {
         QJsonObject obj = value.toObject();
         QString objectId = obj["id"].toString();
@@ -308,10 +307,10 @@ QMap<QString, QVector3D> MyOpenGLWidget::generateObjectPositions(const QJsonArra
 
         QVector3D position(initialX,  m_floorLevel + 2.0f, initialZ);
 
-        // Verifică dacă modelul există
+        // Verifica daca modelul exista
         QString modelPath = getModelPath(objectType);
         if (!modelPath.isEmpty()) {
-            // Calculează înălțimea reală a obiectului
+            // Calculeaza inaltimea reala a obiectului
             QString size = obj["attributes"].toObject()["size"].toString();
 
             // FIX: Use proper object height calculation
@@ -341,7 +340,7 @@ QMap<QString, QVector3D> MyOpenGLWidget::generateObjectPositions(const QJsonArra
         }
     }
 
-    // Aplicare relații
+    // Aplicare relatii
     for (const QJsonValue &value : relations) {
         QJsonObject relationObj = value.toObject();
         QString obj1Id = relationObj["object_1"].toString();
@@ -349,7 +348,7 @@ QMap<QString, QVector3D> MyOpenGLWidget::generateObjectPositions(const QJsonArra
         QString relation = relationObj["relation"].toString();
 
         if (!objectPositions.contains(obj1Id) || !objectPositions.contains(obj2Id)) {
-            continue; // Skip relația dacă obiectele nu există
+            continue; // Skip relatia daca obiectele nu exista
         }
 
         QVector3D offset(0, 0, 0);
@@ -368,7 +367,7 @@ QMap<QString, QVector3D> MyOpenGLWidget::generateObjectPositions(const QJsonArra
 
         QVector3D newPosition = objectPositions[obj2Id] + offset;
 
-        // Aplică constrângerea podelei pentru noua poziție
+        // Aplica constrangerea podelei pentru noua pozitie
         QVector3D minBounds, maxBounds;
         QVector3D dimensions = calculateBoundingBox("cube", "medium", minBounds, maxBounds); // default
         float objectHeight = dimensions.y();
@@ -402,7 +401,7 @@ void MyOpenGLWidget::resolveCollisions(QMap<QString, QVector3D> &positions)
             for (const QVector3D &existingPos : usedPositions) {
                 float distance = pos.distanceToPoint(existingPos);
                 if (distance < (DEFAULT_SPACING - COLLISION_TOLERANCE)) {
-                    // Coliziune detectată, mută obiectul
+                    // Coliziune detectata, muta obiectul
                     pos.setX(pos.x() + DEFAULT_SPACING);
                     hasCollision = true;
                     break;
@@ -411,7 +410,7 @@ void MyOpenGLWidget::resolveCollisions(QMap<QString, QVector3D> &positions)
             attempts++;
         }
 
-        // Aplică constrângerea podelei
+        // Aplica constrangerea podelei
         pos = getFloorConstrainedPosition(pos, 1.0f);
 
         usedPositions.append(pos);
@@ -450,7 +449,7 @@ void MyOpenGLWidget::spawnObjectsInScene(const QMap<QString, QVector3D> &positio
 {
     // QMap<QString, QJsonObject> objectsById;
 
-    // // Creează un map pentru acces rapid la obiecte prin ID
+    // // Creeaza un map pentru acces rapid la obiecte prin ID
     // for (const QJsonValue &value : objects) {
     //     QJsonObject obj = value.toObject();
     //     QString id = obj["id"].toString();
@@ -481,7 +480,7 @@ void MyOpenGLWidget::spawnObjectsInScene(const QMap<QString, QVector3D> &positio
 
     QMap<QString, QJsonObject> objectsById;
 
-    // Indexare rapidă a obiectelor după ID
+    // Indexare rapida a obiectelor dupa ID
     for (const QJsonValue &value : objects) {
         QJsonObject obj = value.toObject();
         QString id = obj["id"].toString();
@@ -498,7 +497,7 @@ void MyOpenGLWidget::spawnObjectsInScene(const QMap<QString, QVector3D> &positio
         QJsonObject obj = objectsById[objectId];
         QString objectType = obj["object"].toString();
 
-        // Verifică dacă modelul e cunoscut (există în primitives)
+        // Verifica daca modelul e cunoscut (exista in primitives)
         if (getModelPath(objectType).isEmpty()) {
             qDebug() << "Skipping unknown model type:" << objectType << "for object" << objectId;
             continue;
@@ -533,7 +532,7 @@ QString MyOpenGLWidget::getModelPath(const QString &objectType)
     // Support for multiple formats in priority order
     QStringList extensions = {".fbx", ".obj", ".gltf", ".glb", ".3ds", ".dae", ".ply", ".stl"};
 
-    // MODIFICARE: Adaugă căutare case-insensitive
+    // MODIFICARE: Adauga cautare case-insensitive
     for (const QString &ext : extensions) {
         QString modelPath = basePath + objectType + ext;
         if (QFile::exists(modelPath)) {
@@ -541,7 +540,7 @@ QString MyOpenGLWidget::getModelPath(const QString &objectType)
             return modelPath;
         }
 
-        // NOUĂ: Căutare case-insensitive în directorul primitives
+        // NOUa: Cautare case-insensitive in directorul primitives
         QDir primitivesDir(basePath);
         QStringList allFiles = primitivesDir.entryList(QDir::Files);
 
@@ -560,7 +559,7 @@ QString MyOpenGLWidget::getModelPath(const QString &objectType)
     QStringList subdirs = primitivesDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
 
     for (const QString &subdir : subdirs) {
-        // MODIFICAT: Comparație case-insensitive pentru subdirectoare
+        // MODIFICAT: Comparatie case-insensitive pentru subdirectoare
         if (subdir.compare(objectType, Qt::CaseInsensitive) == 0 ||
             subdir.toLower().contains(objectType.toLower())) {
 
@@ -571,7 +570,7 @@ QString MyOpenGLWidget::getModelPath(const QString &objectType)
             for (const QString &ext : extensions) {
                 QString targetFileName = objectType + ext;
 
-                // NOUĂ: Căutare case-insensitive în subdirectoare
+                // NOUa: Cautare case-insensitive in subdirectoare
                 for (const QString &fileName : subdirFiles) {
                     if (fileName.compare(targetFileName, Qt::CaseInsensitive) == 0) {
                         QString foundPath = subdirPath + fileName;
@@ -663,7 +662,7 @@ QColor MyOpenGLWidget::parseColor(const QString &colorString)
         return colorMap[lowerColor];
     }
 
-    // Culoare implicită
+    // Culoare implicita
     return QColor(128, 128, 128);
 }
 
@@ -683,7 +682,7 @@ QVector3D MyOpenGLWidget::getFloorConstrainedPosition(const QVector3D &position,
     // qDebug() << "Object height:" << objectHeight;
     // qDebug() << "Floor level:" << m_floorLevel;
     QVector3D constrainedPos = position;
-    float minY = m_floorLevel + (objectHeight / 2.0f) + 0.2f; // Puțin deasupra podelei
+    float minY = m_floorLevel + (objectHeight / 2.0f) + 0.2f; // Putin deasupra podelei
 
     // qDebug() << "Calculated minY:" << minY;
     // qDebug() << "Current Y:" << constrainedPos.y();
@@ -795,14 +794,14 @@ void MyOpenGLWidget::loadModelInScene(const QString &objectType, const QString &
 
     // try {
     //     if (hasPBRTextures(objectType)) {
-    //         qDebug() << "🎨 Using PBR material with textures for:" << objectType;
+    //         qDebug() << "Using PBR material with textures for:" << objectType;
     //         material = new PBRMaterial(entity, objectType, objColor);
     //     } else {
-    //         qDebug() << "🎨 Using PBR material with color only for:" << objectType;
+    //         qDebug() << "Using PBR material with color only for:" << objectType;
     //         material = new PBRMaterial(entity, QString(), objColor);
     //     }
     // } catch (const std::exception &e) {
-    //     qDebug() << "❌ PBR material failed:" << e.what();
+    //     qDebug() << "PBR material failed:" << e.what();
     //     material = nullptr;
     // }
 
@@ -827,7 +826,7 @@ void MyOpenGLWidget::loadModelInScene(const QString &objectType, const QString &
     float finalScale = sizeMultiplier * 2.0f;
     transform->setScale3D(QVector3D(finalScale, finalScale, finalScale));
 
-    // Aplicare constrângeri podea
+    // Aplicare constrangeri podea
     QVector3D minBounds, maxBounds;
     QVector3D dimensions = calculateBoundingBox(objectType, size, minBounds, maxBounds);
     float actualHeight = dimensions.y() * sizeMultiplier * 2.0f; // Account for scale
@@ -850,7 +849,7 @@ void MyOpenGLWidget::loadModelInScene(const QString &objectType, const QString &
     entity->addComponent(transform);
     qDebug() << "FINAL POSITION for" << id << ":" << position << "Floor level:" << m_floorLevel << "Object height:" << actualHeight;
 
-    // Creare obiect scenă
+    // Creare obiect scena
     SceneObject sceneObj;
     sceneObj.id = id;
     sceneObj.type = objectType;
@@ -881,10 +880,10 @@ void MyOpenGLWidget::loadModelInScene(const QString &objectType, const QString &
     qDebug() << "Loaded object:" << id << "of type:" << objectType << "at position:" << position;
 }
 
-// Implementarea funcțiilor de animație
+// Implementarea functiilor de animatie
 void MyOpenGLWidget::setupAnimations(const QJsonArray &objects, const QJsonArray &animationCouples)
 {
-    // Setup animații individuale pentru obiecte
+    // Setup animatii individuale pentru obiecte
     for (const QJsonValue &value : objects) {
         QJsonObject obj = value.toObject();
         QString objectId = obj["id"].toString();
@@ -902,7 +901,7 @@ void MyOpenGLWidget::setupAnimations(const QJsonArray &objects, const QJsonArray
         }
     }
 
-    // Setup animații cuplu (orbitale)
+    // Setup animatii cuplu (orbitale)
     for (const QJsonValue &value : animationCouples) {
         QJsonObject couple = value.toObject();
         QString primaryId = couple["primary_object"].toString();
@@ -921,23 +920,23 @@ void MyOpenGLWidget::setupObjectAnimation(SceneObject &obj, const QString &anima
     }
 
     if (animationType == "rotate" || animationType == "rotation") {
-        // Animația va fi gestionată în updateAnimations()
+        // Animatia va fi gestionata in updateAnimations()
         qDebug() << "Setup rotation animation for object:" << obj.id;
     }
     else if (animationType == "bounce" || animationType == "bouncing") {
-        // Animația va fi gestionată în updateAnimations()
+        // Animatia va fi gestionata in updateAnimations()
         qDebug() << "Setup bounce animation for object:" << obj.id;
     }
     else if (animationType == "float" || animationType == "floating") {
-        // Animația va fi gestionată în updateAnimations()
+        // Animatia va fi gestionata in updateAnimations()
         qDebug() << "Setup float animation for object:" << obj.id;
     }
     else if (animationType == "pulse" || animationType == "pulsing") {
-        // Animația va fi gestionată în updateAnimations()
+        // Animatia va fi gestionata in updateAnimations()
         qDebug() << "Setup pulse animation for object:" << obj.id;
     }
     else if (animationType == "swing" || animationType == "swinging") {
-        // Animația va fi gestionată în updateAnimations()
+        // Animatia va fi gestionata in updateAnimations()
         qDebug() << "Setup swing animation for object:" << obj.id;
     }
 }
@@ -956,7 +955,7 @@ void MyOpenGLWidget::setupOrbitalAnimation(const QString &primaryId, const QStri
     orbital.animationType = animationType;
     orbital.description = description;
 
-    // Configurare parametri bazați pe tip
+    // Configurare parametri bazati pe tip
     if (animationType == "orbit" || animationType == "orbiting") {
         orbital.radius = 5.0f;
         orbital.speed = 0.5f;
@@ -979,7 +978,7 @@ void MyOpenGLWidget::setupOrbitalAnimation(const QString &primaryId, const QStri
 //     static float animationTime = 0.0f;
 //     animationTime += 0.016f; // ~60 FPS
 
-//     // Update animații individuale
+//     // Update animatii individuale
 //     for (auto it = m_sceneObjects.begin(); it != m_sceneObjects.end(); ++it) {
 //         SceneObject &obj = it.value();
 
@@ -989,28 +988,28 @@ void MyOpenGLWidget::setupOrbitalAnimation(const QString &primaryId, const QStri
 
 //         for (const QString &animationType : obj.animations) {
 //             if (animationType == "rotate" || animationType == "rotation") {
-//                 // Rotație continuă pe axa Y
+//                 // Rotatie continua pe axa Y
 //                 QQuaternion currentRotation = obj.transform->rotation();
 //                 QQuaternion yRotation = QQuaternion::fromAxisAndAngle(QVector3D(0, 1, 0),
 //                                                                      animationTime * 30.0f);
 //                 obj.transform->setRotation(yRotation);
 //             }
 //             else if (animationType == "bounce" || animationType == "bouncing") {
-//                 // Sărire verticală
+//                 // Sarire verticala
 //                 float bounceOffset = abs(sin(animationTime * 2.0f)) * 2.0f;
 //                 QVector3D newPos = obj.position;
 //                 newPos.setY(obj.position.y() + bounceOffset);
 //                 obj.transform->setTranslation(newPos);
 //             }
 //             else if (animationType == "float" || animationType == "floating") {
-//                 // Plutire lentă
+//                 // Plutire lenta
 //                 float floatOffset = sin(animationTime * 0.5f) * 1.0f;
 //                 QVector3D newPos = obj.position;
 //                 newPos.setY(obj.position.y() + floatOffset);
 //                 obj.transform->setTranslation(newPos);
 //             }
 //             else if (animationType == "pulse" || animationType == "pulsing") {
-//                 // Scalare pulsantă
+//                 // Scalare pulsanta
 //                 float pulseScale = 1.0f + sin(animationTime * 3.0f) * 0.2f;
 //                 float baseSizeMultiplier = getSizeMultiplier(obj.size);
 //                 obj.transform->setScale(baseSizeMultiplier * pulseScale);
@@ -1024,7 +1023,7 @@ void MyOpenGLWidget::setupOrbitalAnimation(const QString &primaryId, const QStri
 //         }
 //     }
 
-//     // Update animații orbitale
+//     // Update animatii orbitale
 //     for (OrbitalAnimation &orbital : m_orbitalAnimations) {
 //         if (!m_sceneObjects.contains(orbital.primaryObjectId) ||
 //             !m_sceneObjects.contains(orbital.referenceObjectId)) {
@@ -1038,7 +1037,7 @@ void MyOpenGLWidget::setupOrbitalAnimation(const QString &primaryId, const QStri
 //             continue;
 //         }
 
-//         // Calculare poziție orbitală
+//         // Calculare pozitie orbitala
 //         orbital.currentAngle += orbital.speed * 0.016f;
 //         if (orbital.currentAngle > 2.0f * M_PI) {
 //             orbital.currentAngle -= 2.0f * M_PI;
@@ -1046,7 +1045,7 @@ void MyOpenGLWidget::setupOrbitalAnimation(const QString &primaryId, const QStri
 
 //         float x = referenceObj.position.x() + cos(orbital.currentAngle) * orbital.radius;
 //         float z = referenceObj.position.z() + sin(orbital.currentAngle) * orbital.radius;
-//         float y = referenceObj.position.y(); // Menține aceeași înălțime
+//         float y = referenceObj.position.y(); // Mentine aceeasi inaltime
 
 //         QVector3D newPosition(x, y, z);
 //         newPosition = getFloorConstrainedPosition(newPosition, primaryObj.boundingSphereRadius);
@@ -1223,7 +1222,7 @@ void MyOpenGLWidget::updatePhysics()
     const float damping = 0.98f;
     const float minVelocity = 0.01f;
 
-    // Update fizică pentru obiectele dinamice
+    // Update fizica pentru obiectele dinamice
     for (auto it = m_sceneObjects.begin(); it != m_sceneObjects.end(); ++it) {
         SceneObject &obj = it.value();
 
@@ -1231,10 +1230,10 @@ void MyOpenGLWidget::updatePhysics()
             continue;
         }
 
-        // Aplicare gravitație
+        // Aplicare gravitatie
         obj.velocity.setY(obj.velocity.y() + GRAVITY * deltaTime);
 
-        // Update poziție
+        // Update pozitie
         QVector3D newPosition = obj.position + obj.velocity * deltaTime;
 
         // Verificare coliziune cu podea
@@ -1243,7 +1242,7 @@ void MyOpenGLWidget::updatePhysics()
             newPosition.setY(minY);
             obj.velocity.setY(-obj.velocity.y() * 0.6f); // Bounce cu pierdere de energie
 
-            // Oprire dacă viteza este prea mică
+            // Oprire daca viteza este prea mica
             if (abs(obj.velocity.y()) < minVelocity) {
                 obj.velocity.setY(0);
                 obj.isDynamic = false; // Devine static din nou
@@ -1253,13 +1252,13 @@ void MyOpenGLWidget::updatePhysics()
         // Aplicare damping
         obj.velocity *= damping;
 
-        // Oprire dacă viteza este prea mică
+        // Oprire daca viteza este prea mica
         if (obj.velocity.length() < minVelocity) {
             obj.velocity = QVector3D(0, 0, 0);
             obj.isDynamic = false;
         }
 
-        // Update poziție și transform
+        // Update pozitie si transform
         obj.position = newPosition;
         obj.transform->setTranslation(newPosition);
 
@@ -1270,7 +1269,7 @@ void MyOpenGLWidget::updatePhysics()
         obj.boundingBoxMax = newPosition + maxBounds;
     }
 
-    // Verificare coliziuni între obiecte
+    // Verificare coliziuni intre obiecte
     checkObjectCollisions();
 }
 
@@ -1285,7 +1284,7 @@ void MyOpenGLWidget::checkObjectCollisions()
 
             // Verificare coliziune sphere
             if (checkSphereCollision(obj1, obj2)) {
-                // Aplicare impuls doar dacă unul dintre obiecte este dinamic
+                // Aplicare impuls doar daca unul dintre obiecte este dinamic
                 if (obj1.isDynamic && !obj2.isDynamic) {
                     applyImpulse(obj2, obj1);
                 }
@@ -1300,9 +1299,9 @@ void MyOpenGLWidget::checkObjectCollisions()
                     QVector3D relativeVelocity = obj1.velocity - obj2.velocity;
                     float velocityAlongNormal = QVector3D::dotProduct(relativeVelocity, direction);
 
-                    if (velocityAlongNormal > 0) continue; // Obiectele se îndepărtează
+                    if (velocityAlongNormal > 0) continue; // Obiectele se indeparteaza
 
-                    float impulse = 2 * velocityAlongNormal / 2; // Masa egală pentru simplitate
+                    float impulse = 2 * velocityAlongNormal / 2; // Masa egala pentru simplitate
                     QVector3D impulseVector = direction * impulse;
 
                     obj1.velocity -= impulseVector;
@@ -1320,7 +1319,7 @@ void MyOpenGLWidget::loadSettings()
     m_floorLevel = m_settings->value("floorLevel", -2.0f).toFloat();
     m_floorSize = m_settings->value("floorSize", 20.0f).toFloat();
 
-    // Configurări cameră
+    // Configurari camera
     if (view && view->camera()) {
         QVector3D cameraPos = m_settings->value("cameraPosition", QVector3D(0, 15, 30)).value<QVector3D>();
         QVector3D cameraTarget = m_settings->value("cameraTarget", QVector3D(0, 0, 0)).value<QVector3D>();
@@ -1336,7 +1335,7 @@ void MyOpenGLWidget::saveSettings()
     m_settings->setValue("floorLevel", m_floorLevel);
     m_settings->setValue("floorSize", m_floorSize);
 
-    // Salvare configurări cameră
+    // Salvare configurari camera
     if (view && view->camera()) {
         m_settings->setValue("cameraPosition", view->camera()->position());
         m_settings->setValue("cameraTarget", view->camera()->viewCenter());
@@ -1345,7 +1344,7 @@ void MyOpenGLWidget::saveSettings()
     m_settings->sync();
 }
 
-// Funcții utilitare suplimentare
+// Functii utilitare suplimentare
 void MyOpenGLWidget::resetCamera()
 {
     if (view && view->camera()) {
@@ -1359,7 +1358,7 @@ void MyOpenGLWidget::setFloorLevel(float level)
 {
     m_floorLevel = level;
 
-    // Update poziția podelei
+    // Update pozitia podelei
     if (floorEntity) {
         Qt3DCore::QTransform *floorTransform =
             floorEntity->componentsOfType<Qt3DCore::QTransform>().first();
@@ -1368,7 +1367,7 @@ void MyOpenGLWidget::setFloorLevel(float level)
         }
     }
 
-    // Repoziționare obiecte dacă e nevoie
+    // Repozitionare obiecte daca e nevoie
     for (auto it = m_sceneObjects.begin(); it != m_sceneObjects.end(); ++it) {
         SceneObject &obj = it.value();
         QVector3D newPos = getFloorConstrainedPosition(obj.position, obj.boundingSphereRadius);
@@ -1421,7 +1420,7 @@ void MyOpenGLWidget::removeObject(const QString &id)
         }
         m_sceneObjects.remove(id);
 
-        // Elimină animațiile orbitale asociate
+        // Elimina animatiile orbitale asociate
         for (int i = m_orbitalAnimations.size() - 1; i >= 0; --i) {
             if (m_orbitalAnimations[i].primaryObjectId == id ||
                 m_orbitalAnimations[i].referenceObjectId == id) {
