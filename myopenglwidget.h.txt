@@ -1,0 +1,140 @@
+#ifndef MYOPENGLWIDGET_H
+#define MYOPENGLWIDGET_H
+
+#include <QObject>
+#include <QOpenGLWidget>
+#include <QOpenGLFunctions>
+#include <QMouseEvent>
+#include <QTimer>
+#include <QSettings>
+
+#include <Qt3DCore/QEntity>
+#include <Qt3DRender/QCamera>
+#include <Qt3DRender/QMesh>
+#include <Qt3DExtras/Qt3DWindow>
+#include <Qt3DExtras/QPhongMaterial>
+#include <Qt3DExtras/QOrbitCameraController>
+#include <Qt3DCore/QTransform>
+#include <Qt3DAnimation/QAnimationController>
+#include <Qt3DAnimation/QKeyframeAnimation>
+#include <Qt3DAnimation/QMorphingAnimation>
+
+// Object in scene struct
+struct SceneObject {
+    QString id;
+    QString type;
+    QString color;
+    QString size;
+    QVector3D position;
+    QVector3D boundingBoxMin;
+    QVector3D boundingBoxMax;
+    float boundingSphereRadius;
+    Qt3DCore::QEntity* entity;
+    Qt3DCore::QTransform* transform;
+    QStringList animations;
+    bool isDynamic;
+    QVector3D velocity;
+
+    SceneObject() : entity(nullptr), transform(nullptr), isDynamic(false),
+                   boundingSphereRadius(1.0f), velocity(QVector3D(0,0,0)) {}
+};
+
+// Orbiting animation struct
+struct OrbitalAnimation {
+    QString primaryObjectId;
+    QString referenceObjectId;
+    QString animationType;
+    float radius;
+    float speed;
+    float currentAngle;
+    QString description;
+
+    OrbitalAnimation() : radius(3.0f), speed(1.0f), currentAngle(0.0f) {}
+};
+
+class MyOpenGLWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    MyOpenGLWidget(QWidget *parent = nullptr);
+    ~MyOpenGLWidget();
+
+    void loadModel(const QString &filePath);
+    void clearScene();
+    void loadScene(const QString &filePath);
+    void setLanguage(const QString &lang) { m_language = lang; }
+    QString getLanguage() const { return m_language; }
+
+protected slots:
+    void updateAnimations();
+    void updatePhysics();
+
+protected:
+    // JSON parsing and validation
+    QJsonObject parseSceneFile(const QString &filePath);
+    bool validateJsonStructure(const QJsonObject &jsonObject);
+
+    // Generate positions and resolve collisions
+    QMap<QString, QVector3D> generateObjectPositions(const QJsonArray &objects, const QJsonArray &relations);
+    void resolveCollisions(QMap<QString, QVector3D> &positions);
+    bool checkAABBCollision(const SceneObject &obj1, const SceneObject &obj2);
+    bool checkSphereCollision(const SceneObject &obj1, const SceneObject &obj2);
+    void applyImpulse(SceneObject &staticObj, const SceneObject &dynamicObj);
+
+    // Spawn and object management
+    void spawnObjectsInScene(const QMap<QString, QVector3D> &positions,
+                           const QMap<QString, QString> &colors,
+                           const QJsonArray &objects);
+    void loadModelInScene(const QString &objectType, const QString &color,
+                         const QString &size, float x, float y, float z,
+                         const QStringList &animations, const QString &id);
+
+    // Animation setup
+    void setupAnimations(const QJsonArray &objects, const QJsonArray &animationCouples);
+    void setupObjectAnimation(SceneObject &obj, const QString &animationType);
+    void setupOrbitalAnimation(const QString &primaryId, const QString &referenceId,
+                              const QString &animationType, const QString &description);
+
+    // Utils
+    QVector3D calculateBoundingBox(const QString &objectType, const QString &size,
+                                  QVector3D &minBounds, QVector3D &maxBounds);
+    float calculateBoundingSphere(const QString &objectType, const QString &size);
+    QString getModelPath(const QString &objectType);
+    QColor parseColor(const QString &colorString);
+    float getSizeMultiplier(const QString &size);
+    QVector3D getFloorConstrainedPosition(const QVector3D &position, float objectHeight);
+
+    // Settings
+    void loadSettings();
+    void saveSettings();
+
+private:
+    Qt3DExtras::Qt3DWindow *view;
+    Qt3DCore::QEntity *rootEntity;
+    Qt3DCore::QEntity *floorEntity;
+    Qt3DRender::QCamera *camera;
+
+    // Scene management
+    QMap<QString, SceneObject> m_sceneObjects;
+    QVector<OrbitalAnimation> m_orbitalAnimations;
+
+    // Animation and physics
+    QTimer *m_animationTimer;
+    QTimer *m_physicsTimer;
+
+    // Floor configuration
+    float m_floorLevel;
+    float m_floorSize;
+
+    // Settings
+    QString m_language;
+    QSettings *m_settings;
+
+    // Constants
+    static constexpr float GRAVITY = -9.81f;
+    static constexpr float DEFAULT_SPACING = 3.0f;
+    static constexpr float COLLISION_TOLERANCE = 0.1f;
+    static constexpr float IMPULSE_STRENGTH = 2.0f;
+};
+
+#endif // MYOPENGLWIDGET_H

@@ -1,0 +1,36 @@
+# Blender 3.6.4 MTL File: 'vintage_cabinet_01_4k.blend'
+# www.blender.org
+
+newmtl vintage_cabinet_01_a
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cabinet/vintage_cabinet_01_4k/textures/vintage_cabinet_01_a_diff_4k.png
+map_Ns D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cabinet/vintage_cabinet_01_4k/textures/vintage_cabinet_01_a_rough_4k.png
+map_refl D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cabinet/vintage_cabinet_01_4k/textures/vintage_cabinet_01_a_metal_4k.png
+map_Bump -bm 1.000000 D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cabinet/vintage_cabinet_01_4k/textures/vintage_cabinet_01_a_nor_gl_4k.png
+
+newmtl vintage_cabinet_01_b
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cabinet/vintage_cabinet_01_4k/textures/vintage_cabinet_01_b_diff_4k.png
+map_Ns D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cabinet/vintage_cabinet_01_4k/textures/vintage_cabinet_01_b_rough_4k.png
+map_Bump -bm 1.000000 D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cabinet/vintage_cabinet_01_4k/textures/vintage_cabinet_01_b_nor_gl_4k.png
+
+newmtl vintage_cabinet_01_glass
+Ka 1.000000 1.000000 1.000000
+Kd 0.030000 0.030000 0.030000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 0.300000
+illum 9
+map_Ns D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cabinet/vintage_cabinet_01_4k/textures/vintage_cabinet_01_a_rough_4k.png
+map_Bump -bm 1.000000 D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cabinet/vintage_cabinet_01_4k/textures/vintage_cabinet_01_a_nor_gl_4k.png

@@ -1,0 +1,303 @@
+{
+    "animation_couples": [
+        {
+            "description": "golden sphere rotating around a floating silver cube",
+            "primary_animation": "orbital",
+            "primary_object": "sphere_1",
+            "reference_object": "cube_1"
+        },
+        {
+            "description": "large blue WoodenTable4 orbiting around a small rotating painted_wooden_cabinet1",
+            "primary_animation": "orbital",
+            "primary_object": "WoodenTable4_1",
+            "reference_object": "painted_wooden_cabinet1_1"
+        }
+    ],
+    "objects": [
+        {
+            "attributes": {
+                "animations": null,
+                "color": "red",
+                "size": "large"
+            },
+            "id": "painted_wooden_table_1",
+            "object": "painted_wooden_table"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "rotate"
+                ],
+                "color": "blue",
+                "size": "small"
+            },
+            "id": "teapot_1",
+            "object": "teapot"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "float"
+                ],
+                "color": "green",
+                "size": "tall"
+            },
+            "id": "modern_armchair_1",
+            "object": "modern_armchair"
+        },
+        {
+            "attributes": {
+                "animations": null,
+                "color": null,
+                "size": "medium"
+            },
+            "id": "chinese_armchair_1",
+            "object": "chinese_armchair"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "pulse"
+                ],
+                "color": null,
+                "size": "small"
+            },
+            "id": "wooden_stool_1",
+            "object": "wooden_stool"
+        },
+        {
+            "attributes": {
+                "animations": null,
+                "color": "black",
+                "size": null
+            },
+            "id": "GothicBed_1",
+            "object": "GothicBed"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "rotate"
+                ],
+                "color": "golden",
+                "size": null
+            },
+            "id": "sphere_1",
+            "object": "sphere"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "float"
+                ],
+                "color": "silver",
+                "size": null
+            },
+            "id": "cube_1",
+            "object": "cube"
+        },
+        {
+            "attributes": {
+                "animations": null,
+                "color": null,
+                "size": null
+            },
+            "id": "vintage_cabinet_1",
+            "object": "vintage_cabinet"
+        },
+        {
+            "attributes": {
+                "animations": null,
+                "color": null,
+                "size": null
+            },
+            "id": "coffee_table_round1_1",
+            "object": "coffee_table_round1"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "glow"
+                ],
+                "color": "red",
+                "size": null
+            },
+            "id": "cone_1",
+            "object": "cone"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "bounce"
+                ],
+                "color": "yellow",
+                "size": null
+            },
+            "id": "sphere_2",
+            "object": "sphere"
+        },
+        {
+            "attributes": {
+                "animations": null,
+                "color": null,
+                "size": null
+            },
+            "id": "ornate_mirror_1",
+            "object": "ornate_mirror"
+        },
+        {
+            "attributes": {
+                "animations": null,
+                "color": null,
+                "size": null
+            },
+            "id": "painted_wooden_stool_1",
+            "object": "painted_wooden_stool"
+        },
+        {
+            "attributes": {
+                "animations": null,
+                "color": null,
+                "size": null
+            },
+            "id": "steel_frame_shelves2_1",
+            "object": "steel_frame_shelves2"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "rotate"
+                ],
+                "color": null,
+                "size": null
+            },
+            "id": "bar_chair_round_1",
+            "object": "bar_chair_round"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "orbit"
+                ],
+                "color": "blue",
+                "size": "large"
+            },
+            "id": "WoodenTable4_1",
+            "object": "WoodenTable4"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "rotate",
+                    "float"
+                ],
+                "color": null,
+                "size": "small"
+            },
+            "id": "painted_wooden_cabinet1_1",
+            "object": "painted_wooden_cabinet1"
+        },
+        {
+            "attributes": {
+                "animations": [
+                    "glow"
+                ],
+                "color": null,
+                "size": null
+            },
+            "id": "stone_fire_pit_1",
+            "object": "stone_fire_pit"
+        },
+        {
+            "attributes": {
+                "animations": null,
+                "color": null,
+                "size": null
+            },
+            "id": "folding_wooden_stool_1",
+            "object": "folding_wooden_stool"
+        }
+    ],
+    "relations": [
+        {
+            "object_1": "teapot_1",
+            "object_2": "painted_wooden_table_1",
+            "relation": "on"
+        },
+        {
+            "object_1": "modern_armchair_1",
+            "object_2": "painted_wooden_table_1",
+            "relation": "left_of"
+        },
+        {
+            "object_1": "chinese_armchair_1",
+            "object_2": "painted_wooden_table_1",
+            "relation": "right_of"
+        },
+        {
+            "object_1": "chinese_armchair_1",
+            "object_2": "wooden_stool_1",
+            "relation": "next_to"
+        },
+        {
+            "object_1": "GothicBed_1",
+            "object_2": "painted_wooden_table_1",
+            "relation": "behind"
+        },
+        {
+            "object_1": "sphere_1",
+            "object_2": "GothicBed_1",
+            "relation": "above"
+        },
+        {
+            "object_1": "cube_1",
+            "object_2": "GothicBed_1",
+            "relation": "above"
+        },
+        {
+            "object_1": "vintage_cabinet_1",
+            "object_2": "coffee_table_round1_1",
+            "relation": "near"
+        },
+        {
+            "object_1": "coffee_table_round1_1",
+            "object_2": "vintage_cabinet_1",
+            "relation": "in_front_of"
+        },
+        {
+            "object_1": "cone_1",
+            "object_2": "coffee_table_round1_1",
+            "relation": "on"
+        },
+        {
+            "object_1": "sphere_2",
+            "object_2": "coffee_table_round1_1",
+            "relation": "on"
+        },
+        {
+            "object_1": "ornate_mirror_1",
+            "object_2": "coffee_table_round1_1",
+            "relation": "on"
+        },
+        {
+            "object_1": "painted_wooden_stool_1",
+            "object_2": "coffee_table_round1_1",
+            "relation": "under"
+        },
+        {
+            "object_1": "bar_chair_round_1",
+            "object_2": "steel_frame_shelves2_1",
+            "relation": "next_to"
+        },
+        {
+            "object_1": "stone_fire_pit_1",
+            "object_2": "painted_wooden_table_1",
+            "relation": "between"
+        },
+        {
+            "object_1": "folding_wooden_stool_1",
+            "object_2": "stone_fire_pit_1",
+            "relation": "left_of"
+        }
+    ]
+}

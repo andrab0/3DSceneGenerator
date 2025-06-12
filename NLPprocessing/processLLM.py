@@ -74,14 +74,20 @@ OUTPUT ONLY VALID JSON in this EXACT format:
 }
 
 RULES:
-1. Extract ONLY physical objects (chair, table, cube, sphere, lamp, etc.)
+1. Extract ONLY physical objects, preserving exact names including compound names with underscores (painted_wooden_sofa, painted_wooden_cabinet2, chinese_stool, etc.)
 2. Skip abstract words (center, room, triangle, scene, etc.)
-3. Give each object unique ID: chair_1, chair_2, table_1, etc.
+3. Give each object unique ID based on object name: painted_wooden_sofa_1, painted_wooden_sofa_2, chinese_stool_1, etc.
 4. Detect colors: red, blue, green, white, black, etc.
 5. Detect sizes: large, small, medium, tall, etc.
 6. Detect animations: rotate, bounce, float, glow, pulse, etc.
-7. Use relations: on, under, near, above, below, inside, next_to, between
+7. Use relations: on, under, near, above, below, inside, next_to, between, left_of, right_of
 8. For "X rotates around Y" use animation_couples with "orbital"
+9. Preserve object names EXACTLY as written in the input text (case sensitive)
+10. Do NOT invent objects, colors, or relations not explicitly mentioned in the text
+11. For basic shapes (sphere, cube, cone), use the base object name and put color in attributes:
+- 'golden sphere' → object: 'sphere', attributes: {'color': 'golden'}
+- 'silver cube' → object: 'cube', attributes: {'color': 'silver'}
+12. Only create relations between actual physical objects, not abstract concepts like 'entrance', 'furniture', 'wall'.
 
 Extract ONLY what is explicitly mentioned. Do NOT add extra objects."""
 

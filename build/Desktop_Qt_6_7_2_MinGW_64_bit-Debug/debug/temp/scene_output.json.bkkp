@@ -1,0 +1,14 @@
+{
+    "objects": [
+        {
+            "id": "bed_1",
+            "object": "GothicBed",
+            "attributes": {
+                "color": null,
+                "size": null,
+                "animations": null
+            }
+        }
+    ],
+    "relations": []
+}

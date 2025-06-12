@@ -1,0 +1,26 @@
+# Blender 3.6.4 MTL File: 'wooden_picnic_table_4k.blend'
+# www.blender.org
+
+newmtl wooden_picnic_table_bottom
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/MASTER/Cercetare/sem2/3Dmodels/furniture/table/wooden_picnic_table_4k/textures/wooden_picnic_table_bottom_diff_4k.png
+map_Ns D:/MASTER/Cercetare/sem2/3Dmodels/furniture/table/wooden_picnic_table_4k/textures/wooden_picnic_table_bottom_rough_4k.png
+map_refl D:/MASTER/Cercetare/sem2/3Dmodels/furniture/table/wooden_picnic_table_4k/textures/wooden_picnic_table_bottom_metal_4k.png
+map_Bump -bm 1.000000 D:/MASTER/Cercetare/sem2/3Dmodels/furniture/table/wooden_picnic_table_4k/textures/wooden_picnic_table_bottom_nor_gl_4k.png
+
+newmtl wooden_picnic_table_table
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/MASTER/Cercetare/sem2/3Dmodels/furniture/table/wooden_picnic_table_4k/textures/wooden_picnic_table_top_diff_4k.png
+map_Ns D:/MASTER/Cercetare/sem2/3Dmodels/furniture/table/wooden_picnic_table_4k/textures/wooden_picnic_table_top_rough_4k.png
+map_refl D:/MASTER/Cercetare/sem2/3Dmodels/furniture/table/wooden_picnic_table_4k/textures/wooden_picnic_table_top_metal_4k.png
+map_Bump -bm 1.000000 D:/MASTER/Cercetare/sem2/3Dmodels/furniture/table/wooden_picnic_table_4k/textures/wooden_picnic_table_top_nor_gl_4k.png

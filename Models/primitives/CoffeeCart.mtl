@@ -1,0 +1,36 @@
+# Blender 3.6.4 MTL File: 'CoffeeCart_01_4k.blend'
+# www.blender.org
+
+newmtl CoffeeCart_01_cart
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cart/CoffeeCart_01_4k/textures/CoffeeCart_01_cart_diff_4k.png
+map_Ns D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cart/CoffeeCart_01_4k/textures/CoffeeCart_01_cart_roughness_4k.png
+map_refl D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cart/CoffeeCart_01_4k/textures/CoffeeCart_01_cart_metallic_4k.png
+map_Bump -bm 1.000000 D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cart/CoffeeCart_01_4k/textures/CoffeeCart_01_cart_nor_gl_4k.png
+
+newmtl CoffeeCart_01_mugs
+Ns 714.793457
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl CoffeeCart_01_props
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cart/CoffeeCart_01_4k/textures/CoffeeCart_01_props_diff_4k.png
+map_Ns D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cart/CoffeeCart_01_4k/textures/CoffeeCart_01_props_roughness_4k.png
+map_refl D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cart/CoffeeCart_01_4k/textures/CoffeeCart_01_props_metallic_4k.png
+map_Bump -bm 1.000000 D:/MASTER/Cercetare/sem2/3Dmodels/furniture/cart/CoffeeCart_01_4k/textures/CoffeeCart_01_props_nor_gl_4k.png

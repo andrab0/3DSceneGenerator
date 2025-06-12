@@ -1,0 +1,298 @@
+{
+    "objects": [
+        {
+            "id": "wooden_chair_1",
+            "object": "wooden_chair",
+            "attributes": {
+                "color": "red",
+                "size": "large",
+                "animations": null
+            }
+        },
+        {
+            "id": "wooden_chair_2",
+            "object": "wooden_chair",
+            "attributes": {
+                "color": "blue",
+                "size": "medium",
+                "animations": null
+            }
+        },
+        {
+            "id": "wooden_chair_3",
+            "object": "wooden_chair",
+            "attributes": {
+                "color": "green",
+                "size": "small",
+                "animations": null
+            }
+        },
+        {
+            "id": "glass_table_1",
+            "object": "glass_table",
+            "attributes": {
+                "color": "white",
+                "size": "small",
+                "animations": null
+            }
+        },
+        {
+            "id": "glass_table_2",
+            "object": "glass_table",
+            "attributes": {
+                "color": "black",
+                "size": "large",
+                "animations": null
+            }
+        },
+        {
+            "id": "metal_lamp_1",
+            "object": "metal_lamp",
+            "attributes": {
+                "color": null,
+                "size": "tall",
+                "animations": [
+                    "glow"
+                ]
+            }
+        },
+        {
+            "id": "glass_vase_1",
+            "object": "glass_vase",
+            "attributes": {
+                "color": null,
+                "size": null,
+                "animations": null
+            }
+        },
+        {
+            "id": "pink_flowers_1",
+            "object": "pink_flowers",
+            "attributes": {
+                "color": "pink",
+                "size": null,
+                "animations": null
+            }
+        },
+        {
+            "id": "book_1",
+            "object": "book",
+            "attributes": {
+                "color": null,
+                "size": null,
+                "animations": null
+            }
+        },
+        {
+            "id": "book_2",
+            "object": "book",
+            "attributes": {
+                "color": null,
+                "size": null,
+                "animations": null
+            }
+        },
+        {
+            "id": "orange_cat_1",
+            "object": "orange_cat",
+            "attributes": {
+                "color": "orange",
+                "size": "small",
+                "animations": null
+            }
+        },
+        {
+            "id": "blue_cushion_1",
+            "object": "blue_cushion",
+            "attributes": {
+                "color": "blue",
+                "size": null,
+                "animations": null
+            }
+        },
+        {
+            "id": "yellow_ball_1",
+            "object": "yellow_ball",
+            "attributes": {
+                "color": "yellow",
+                "size": null,
+                "animations": [
+                    "bounce"
+                ]
+            }
+        },
+        {
+            "id": "sphere_1",
+            "object": "sphere",
+            "attributes": {
+                "color": "red",
+                "size": null,
+                "animations": [
+                    "rotate"
+                ]
+            }
+        },
+        {
+            "id": "sphere_2",
+            "object": "sphere",
+            "attributes": {
+                "color": "blue",
+                "size": null,
+                "animations": [
+                    "float"
+                ]
+            }
+        },
+        {
+            "id": "sphere_3",
+            "object": "sphere",
+            "attributes": {
+                "color": "golden",
+                "size": null,
+                "animations": [
+                    "pulse"
+                ]
+            }
+        },
+        {
+            "id": "cube_1",
+            "object": "cube",
+            "attributes": {
+                "color": null,
+                "size": "small",
+                "animations": [
+                    "spin"
+                ]
+            }
+        },
+        {
+            "id": "teapot_1",
+            "object": "teapot",
+            "attributes": {
+                "color": null,
+                "size": "large",
+                "animations": [
+                    "oscillate"
+                ]
+            }
+        },
+        {
+            "id": "clock_1",
+            "object": "clock",
+            "attributes": {
+                "color": null,
+                "size": null,
+                "animations": null
+            }
+        },
+        {
+            "id": "clock_2",
+            "object": "clock",
+            "attributes": {
+                "color": null,
+                "size": null,
+                "animations": null
+            }
+        },
+        {
+            "id": "bookshelf_1",
+            "object": "bookshelf",
+            "attributes": {
+                "color": null,
+                "size": null,
+                "animations": null
+            }
+        }
+    ],
+    "relations": [
+        {
+            "object_1": "wooden_chair_1",
+            "relation": "between",
+            "object_2": "wooden_chair_2"
+        },
+        {
+            "object_1": "wooden_chair_2",
+            "relation": "between",
+            "object_2": "wooden_chair_3"
+        },
+        {
+            "object_1": "wooden_chair_3",
+            "relation": "between",
+            "object_2": "wooden_chair_1"
+        },
+        {
+            "object_1": "glass_table_1",
+            "relation": "between",
+            "object_2": "glass_table_2"
+        },
+        {
+            "object_1": "metal_lamp_1",
+            "relation": "on",
+            "object_2": "glass_table_1"
+        },
+        {
+            "object_1": "glass_vase_1",
+            "relation": "on",
+            "object_2": "glass_table_1"
+        },
+        {
+            "object_1": "book_1",
+            "relation": "on",
+            "object_2": "glass_table_1"
+        },
+        {
+            "object_1": "book_2",
+            "relation": "on",
+            "object_2": "glass_table_1"
+        },
+        {
+            "object_1": "orange_cat_1",
+            "relation": "under",
+            "object_2": "glass_table_2"
+        },
+        {
+            "object_1": "blue_cushion_1",
+            "relation": "under",
+            "object_2": "orange_cat_1"
+        },
+        {
+            "object_1": "yellow_ball_1",
+            "relation": "near",
+            "object_2": "orange_cat_1"
+        },
+        {
+            "object_1": "cube_1",
+            "relation": "on",
+            "object_2": "glass_table_1"
+        },
+        {
+            "object_1": "teapot_1",
+            "relation": "on",
+            "object_2": "glass_table_2"
+        },
+        {
+            "object_1": "clock_1",
+            "relation": "on",
+            "object_2": "bookshelf_1"
+        },
+        {
+            "object_1": "clock_2",
+            "relation": "on",
+            "object_2": "bookshelf_1"
+        }
+    ],
+    "animation_couples": [
+        {
+            "primary_object": "sphere_1",
+            "primary_animation": "orbital",
+            "reference_object": "sphere_2",
+            "description": "red sphere rotates around blue sphere"
+        },
+        {
+            "primary_object": "sphere_3",
+            "primary_animation": "orbital",
+            "reference_object": "sphere_2",
+            "description": "golden sphere orbits around blue sphere"
+        }
+    ]
+}
